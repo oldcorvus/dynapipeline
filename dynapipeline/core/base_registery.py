@@ -3,7 +3,10 @@ This module contains the BaseRegistry class, which is responsible for managing i
 """
 from typing import Dict, Generic, Optional, TypeVar
 
-from exceptions.registry_exceptions import ItemAlreadyRegisteredError, ItemNotFoundError
+from dynapipeline.exceptions.registry_exceptions import (
+    ItemAlreadyRegisteredError,
+    ItemNotFoundError,
+)
 
 T = TypeVar("T")
 

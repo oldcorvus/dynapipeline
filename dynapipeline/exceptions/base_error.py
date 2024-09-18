@@ -6,7 +6,7 @@ import datetime
 import uuid
 from typing import Any, Dict, Optional
 
-from utils.error_levels import SeverityLevel
+from dynapipeline.utils.error_levels import SeverityLevel
 
 
 class BaseError:

@@ -3,7 +3,6 @@ This module defines the base abstract class for error middleware in the pipeline
 """
 
 from abc import ABC, abstractmethod
-from typing import Optional
 
 from dynapipeline.exceptions.base_error import BaseError
 
@@ -18,7 +17,7 @@ class ErrorMiddleware(ABC):
         self.description = description
 
     @abstractmethod
-    def handle(self, error: BaseError) -> Optional[BaseError]:
+    def handle(self, error: BaseError) -> BaseError:
         """
         Handle the given error.
         """

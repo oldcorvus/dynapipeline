@@ -1,12 +1,12 @@
 """
 This module contains unit tests for the StageTypeRegistry class"""
 import pytest
+from pipelines.stage_type_registry import StageTypeRegistry
 
 from dynapipeline.exceptions.registry_exceptions import (
     ItemAlreadyRegisteredError,
     ItemNotFoundError,
 )
-from dynapipeline.pipelines.state_type_registry import StageTypeRegistry
 from dynapipeline.utils.stage_types import StageType
 
 

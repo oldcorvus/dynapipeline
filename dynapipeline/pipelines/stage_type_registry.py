@@ -19,3 +19,11 @@ class StageTypeRegistry(BaseRegistry[str]):
         if set_default:
             for st_type in StageType:
                 self.register(st_type.name, st_type.value)
+
+    def reset_to_default(self) -> None:
+        """
+        Resets the registry to contain only the default stage types.
+        """
+        self.clear()
+        for st_type in StageType:
+            self.register(st_type.name, st_type.value)

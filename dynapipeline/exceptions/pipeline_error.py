@@ -3,7 +3,8 @@
 """
 from typing import Any, Dict, Optional
 
-from dynapipeline.exceptions.base_error import BaseError, SeverityLevel
+from dynapipeline.exceptions.base_error import BaseError
+from dynapipeline.utils.error_levels import SeverityLevel
 
 
 class PipelineError(BaseError):

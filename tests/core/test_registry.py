@@ -3,7 +3,7 @@
 """
 import pytest
 
-from dynapipeline.core.base_registery import BaseRegistry
+from dynapipeline.core.base_registry import BaseRegistry
 from dynapipeline.exceptions.registry_exceptions import (
     ItemAlreadyRegisteredError,
     ItemNotFoundError,

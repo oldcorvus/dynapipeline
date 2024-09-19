@@ -4,5 +4,5 @@ ruff==0.1.5
 mypy==1.6.1
 pylint==3.2.2
 pre-commit==3.3.3
-PyYAML==6.0 
-toml==0.10.2 
+PyYAML>=5.3.1
+toml>=0.10.2

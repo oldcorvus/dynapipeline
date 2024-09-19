@@ -25,7 +25,7 @@ jobs:
         pip install -r dev-requirements.txt  # Install development dependencies
 
     - name: Run pre-commit checks
-      uses: pre-commit/action@v4
+      uses: pre-commit/action@v3
       with:
         extra_args: run --all-files
 

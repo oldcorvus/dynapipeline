@@ -1,14 +1,13 @@
 """
 This module contains the BaseRegistry class, which is responsible for managing items of any type.
 """
-from typing import Dict, Generic, Optional, TypeVar
+from typing import Dict, Generic, Optional
 
 from dynapipeline.exceptions.registry_exceptions import (
     ItemAlreadyRegisteredError,
     ItemNotFoundError,
 )
-
-T = TypeVar("T")
+from dynapipeline.utils.types import T
 
 
 class BaseRegistry(Generic[T]):

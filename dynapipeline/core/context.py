@@ -1,9 +1,9 @@
 """
     Defines BaseContext class to  manage attributes dynamically
 """
-from typing import Dict, Generic, Optional, TypeVar
+from typing import Dict, Generic, Optional
 
-T = TypeVar("T")
+from dynapipeline.utils.types import T
 
 
 class BaseContext(Generic[T]):

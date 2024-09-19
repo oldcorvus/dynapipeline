@@ -3,9 +3,9 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
+from typing import Generic
 
-T = TypeVar("T")
+from dynapipeline.utils.types import T
 
 
 class BaseMiddleware(ABC, Generic[T]):

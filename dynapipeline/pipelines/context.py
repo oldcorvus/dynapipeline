@@ -3,13 +3,12 @@ Defines the PipelineContext class which allows dynamic key-value management and 
 errors
 """
 
-from typing import Optional, TypeVar
+from typing import Optional
 
 from dynapipeline.core.context import BaseContext
 from dynapipeline.exceptions.base_error import BaseError
 from dynapipeline.exceptions.error_registry import ErrorRegistry
-
-T = TypeVar("T")
+from dynapipeline.utils.types import T
 
 
 class PipelineContext(BaseContext[T]):

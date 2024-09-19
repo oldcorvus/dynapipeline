@@ -18,7 +18,7 @@ class BaseError:
         self,
         message: str,
         error_type: str,
-        severity: SeverityLevel,
+        severity: SeverityLevel = SeverityLevel.WARNING,
         context: Optional[Dict[str, Any]] = None,
     ):
         """

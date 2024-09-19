@@ -4,9 +4,8 @@ Defines specialized middleware to log errors using Python's logging module
 import logging
 from typing import Optional
 
-from exceptions.middleware.base import ErrorMiddleware
-
 from dynapipeline.exceptions.base_error import BaseError
+from dynapipeline.exceptions.middleware.base import ErrorMiddleware
 
 
 class LoggerMiddleware(ErrorMiddleware):

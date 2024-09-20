@@ -17,8 +17,16 @@ class BaseMiddleware(ABC, Generic[T]):
         self.enabled = enabled
         self.description = description
 
-    @abstractmethod
     def handle(self, item: T) -> T:
+        """
+        Handle the given item
+        """
+        if not self.enabled:
+            return item
+        return self._handle(item)
+
+    @abstractmethod
+    def _handle(self, item: T) -> T:
         """
         Handle the given item
         """

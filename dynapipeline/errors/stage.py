@@ -1,17 +1,16 @@
 """
-    This module defines the PipelineError class, which represent errors that occur at the pipeline level
+    This module defines the PipelineError class which represent errors that occur at the pipeline level
 
 """
 from typing import Any, Dict, Optional
 
-from dynapipeline.exceptions.base_error import BaseError
+from dynapipeline.errors.base import BaseError
 from dynapipeline.utils.error_levels import SeverityLevel
 
 
 class StageError(BaseError):
     """
-    Represents an error that occurs during the execution of a specific stage in the pipeline.
-
+    Represents an error that occurs during the execution of a specific stage in the pipeline
     """
 
     def __init__(
@@ -24,7 +23,7 @@ class StageError(BaseError):
         context: Optional[Dict[str, Any]] = None,
     ):
         """
-        Initializes the StageError with stage-specific information.
+        Initializes the StageError with stage-specific information
         """
         super().__init__(
             message=message, error_type=error_type, severity=severity, context=context
@@ -34,7 +33,7 @@ class StageError(BaseError):
 
     def __repr__(self) -> str:
         """
-        Returns a string representation of the StageError for debugging.
+        Returns a string representation of the StageError
         """
         return (
             f"{self.__class__.__name__}(id={self.error_id}, stage_id={self.stage_id}, stage_name={self.stage_name}, "

@@ -5,6 +5,7 @@
 from abc import ABC, abstractmethod
 from typing import Generic
 
+from dynapipeline.exceptions.middleware import MiddlewareProcessingError
 from dynapipeline.utils.types import T
 
 
@@ -21,9 +22,13 @@ class BaseMiddleware(ABC, Generic[T]):
         """
         Handle the given item
         """
+
         if not self.enabled:
             return item
-        return self._handle(item)
+        try:
+            return self._handle(item)
+        except Exception as e:
+            raise MiddlewareProcessingError(f"{self.__class__.__name__}", str(e)) from e
 
     @abstractmethod
     def _handle(self, item: T) -> T:

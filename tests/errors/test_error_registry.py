@@ -9,8 +9,8 @@ from typing import Optional
 import pytest
 
 from dynapipeline.core.base_middleware import BaseMiddleware
-from dynapipeline.exceptions.base_error import BaseError
-from dynapipeline.exceptions.error_registry import ErrorRegistry
+from dynapipeline.errors.base import BaseError
+from dynapipeline.errors.registry import ErrorRegistry
 
 
 class MockMiddleware(BaseMiddleware[BaseError]):

@@ -7,7 +7,7 @@ from typing import Optional
 
 from dynapipeline.core.context import BaseContext
 from dynapipeline.errors.base import BaseError
-from dynapipeline.exceptions.error_registry import ErrorRegistry
+from dynapipeline.errors.registry import ErrorRegistry
 from dynapipeline.utils.types import T
 
 

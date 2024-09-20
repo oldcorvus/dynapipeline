@@ -6,7 +6,7 @@ from collections import defaultdict
 from typing import List, Optional
 
 from dynapipeline.core.base_registry import BaseRegistry
-from dynapipeline.exceptions.base_error import BaseError
+from dynapipeline.errors.base import BaseError
 from dynapipeline.middlewares.mixin import MiddlewareMixin
 
 

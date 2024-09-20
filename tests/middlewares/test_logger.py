@@ -4,8 +4,9 @@ Contains tests for LoggerMiddleware
 
 import logging
 
-from dynapipeline.exceptions.base_error import BaseError, SeverityLevel
+from dynapipeline.errors.base import BaseError
 from dynapipeline.middlewares.logger import LoggerMiddleware
+from dynapipeline.utils.error_levels import SeverityLevel
 
 
 def test_default_behavior_logs_error(caplog):

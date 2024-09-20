@@ -4,7 +4,7 @@ Contains tests for PiplineContext
 
 import pytest
 
-from dynapipeline.exceptions.base_error import BaseError
+from dynapipeline.errors.base import BaseError
 from dynapipeline.pipelines.context import PipelineContext
 
 

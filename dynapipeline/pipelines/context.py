@@ -6,7 +6,7 @@ errors
 from typing import Optional
 
 from dynapipeline.core.context import BaseContext
-from dynapipeline.exceptions.base_error import BaseError
+from dynapipeline.errors.base import BaseError
 from dynapipeline.exceptions.error_registry import ErrorRegistry
 from dynapipeline.utils.types import T
 

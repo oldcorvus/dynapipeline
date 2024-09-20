@@ -7,7 +7,7 @@ from typing import Optional
 
 from dynapipeline.core.context import BaseContext
 from dynapipeline.errors.base import BaseError
-from dynapipeline.errors.registry import ErrorRegistry
+from dynapipeline.errors.manager import ErrorManager
 from dynapipeline.utils.types import T
 
 
@@ -19,10 +19,10 @@ class PipelineContext(BaseContext[T]):
     def __init__(
         self,
         raise_on_missing: bool = False,
-        error_registry: Optional[ErrorRegistry] = None,
+        error_registry: Optional[ErrorManager] = None,
     ) -> None:
         super().__init__(raise_on_missing)
-        self._error_registry = error_registry or ErrorRegistry()
+        self._error_registry = error_registry or ErrorManager()
 
     def add_error(self, error: BaseError, context: str = "default") -> None:
         """

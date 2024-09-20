@@ -10,7 +10,7 @@ import pytest
 
 from dynapipeline.core.base_middleware import BaseMiddleware
 from dynapipeline.errors.base import BaseError
-from dynapipeline.errors.registry import ErrorRegistry
+from dynapipeline.errors.manager import ErrorManager
 
 
 class MockMiddleware(BaseMiddleware[BaseError]):
@@ -32,7 +32,7 @@ def test_add_middleware():
     mdw1 = MockMiddleware()
     mdw2 = MockMiddleware()
 
-    registry = ErrorRegistry()
+    registry = ErrorManager()
 
     registry.add_middleware(mdw1)
     registry.add_middleware(mdw2)
@@ -47,7 +47,7 @@ def test_remove_middleware():
     mdw1 = MockMiddleware()
     mdw2 = MockMiddleware()
 
-    registry = ErrorRegistry()
+    registry = ErrorManager()
 
     registry.add_middleware(mdw1)
     registry.add_middleware(mdw2)
@@ -78,7 +78,7 @@ def test_handle_middleware(caplog):
             return error
 
     mdw1 = TestMiddleware()
-    registry = ErrorRegistry()
+    registry = ErrorManager()
 
     registry.add_middleware(mdw1)
 
@@ -108,7 +108,7 @@ def test_middleware_handles_error():
             return None
 
     mdw1 = TestMiddleware()
-    registry = ErrorRegistry()
+    registry = ErrorManager()
 
     registry.add_middleware(mdw1)
 
@@ -123,7 +123,7 @@ def test_add_and_get_error():
     """
     Test adding an error to the registry and retrieving it with context
     """
-    error_registry = ErrorRegistry()
+    error_registry = ErrorManager()
 
     error = BaseError("Test error", "TestErrorType", "high")
     error_registry.add(error, context="stage1")
@@ -137,7 +137,7 @@ def test_add_to_default_context():
     """
     Test adding an error with default context
     """
-    error_registry = ErrorRegistry()
+    error_registry = ErrorManager()
 
     error = BaseError("Default error", "DefaultErrorType", "low")
     error_registry.add(error)
@@ -151,7 +151,7 @@ def test_add_multiple_errors_to_context():
     """
     Test adding multiple errors to a single context.
     """
-    error_registry = ErrorRegistry()
+    error_registry = ErrorManager()
 
     error1 = BaseError("Error 1", "ErrorType1", "high")
     error2 = BaseError("Error 2", "ErrorType2", "medium")
@@ -172,7 +172,7 @@ def test_clear_errors_in_context():
     """
     Test clearing errors from a specific context
     """
-    error_registry = ErrorRegistry()
+    error_registry = ErrorManager()
 
     error = BaseError("Clear test error", "ClearErrorType", "medium")
     error_registry.add(error, context="stage2")
@@ -188,7 +188,7 @@ def test_list_all_errors():
     """
     Test listing all errors from multiple contexts
     """
-    error_registry = ErrorRegistry()
+    error_registry = ErrorManager()
 
     error1 = BaseError("Error 1", "ErrorType1", "high")
     error2 = BaseError("Error 2", "ErrorType2", "medium")
@@ -207,7 +207,7 @@ def test_clear_all_errors():
     """
     Test clearing all errors from the registry
     """
-    error_registry = ErrorRegistry()
+    error_registry = ErrorManager()
 
     error1 = BaseError("Error 1", "ErrorType1", "high")
     error2 = BaseError("Error 2", "ErrorType2", "medium")

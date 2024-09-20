@@ -1,5 +1,5 @@
 """
-Defines ErrorRegistry class for managing errors
+Defines ErrorManager class for managing errors
 """
 
 from collections import defaultdict
@@ -10,9 +10,9 @@ from dynapipeline.errors.base import BaseError
 from dynapipeline.middlewares.mixin import MiddlewareMixin
 
 
-class ErrorRegistry(BaseRegistry[List[BaseError]], MiddlewareMixin[BaseError]):
+class ErrorManager(BaseRegistry[List[BaseError]], MiddlewareMixin[BaseError]):
     """
-    A registry class for managing multiple errors in a system
+    A manager class for managing multiple errors in a system
     """
 
     def __init__(self):

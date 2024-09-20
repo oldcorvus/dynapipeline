@@ -7,22 +7,27 @@ from typing import List, Optional
 
 from dynapipeline.core.base_registry import BaseRegistry
 from dynapipeline.exceptions.base_error import BaseError
+from dynapipeline.middlewares.mixin import MiddlewareMixin
 
 
-class ErrorRegistry(BaseRegistry[List[BaseError]]):
+class ErrorRegistry(BaseRegistry[List[BaseError]], MiddlewareMixin[BaseError]):
     """
     A registry class for managing multiple errors in a system
     """
 
     def __init__(self):
-        super().__init__()
+        BaseRegistry.__init__(self)
+        MiddlewareMixin.__init__(self)
+
         self._items = defaultdict(list)
 
     def add(self, error: BaseError, context: str = "default") -> None:
         """
         Adds an error to the registry for optional context
         """
-        self._items[context].append(error)
+        error = self.process_with_middleware(error)
+        if error is not None:
+            self._items[context].append(error)
 
     def get(self, context: str = "default") -> List[BaseError]:
         """

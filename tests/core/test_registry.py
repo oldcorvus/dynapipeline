@@ -4,7 +4,7 @@
 import pytest
 
 from dynapipeline.core.base_registry import BaseRegistry
-from dynapipeline.exceptions.registry_exceptions import (
+from dynapipeline.exceptions.registry import (
     ItemAlreadyRegisteredError,
     ItemNotFoundError,
 )

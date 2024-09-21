@@ -27,12 +27,12 @@ class MiddlewareMixin(Generic[T]):
         """
         self._middleware.remove(middleware)
 
-    def process_with_middleware(self, item: T) -> T:
+    async def process_with_middleware(self, item: T) -> T:
         """
         Processes the item through all registered middleware
         """
         for middleware in self._middleware:
-            item = middleware.handle(item)
+            item = await middleware.handle(item)
             if item is None:
                 break
         return item

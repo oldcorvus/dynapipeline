@@ -49,33 +49,35 @@ def test_get_data_with_default(pipeline_context):
     assert pipeline_context.get("non_existent_key", "default_value") == "default_value"
 
 
-def test_add_and_get_errors(pipeline_context):
+@pytest.mark.asyncio
+async def test_add_and_get_errors(pipeline_context):
     """Test  errors can be added to the error registry and retrieved"""
     error = BaseError("Test error", "TestErrorType", "HIGH")
-    pipeline_context.add_error(error, context="stage_1")
+    await pipeline_context.add_error(error, context="stage_1")
 
     errors = pipeline_context.get_errors("stage_1")
     assert len(errors) == 1
     assert errors[0].message == "Test error"
 
 
-def test_get_errors_without_context(pipeline_context):
+@pytest.mark.asyncio
+async def test_get_errors_without_context(pipeline_context):
     """Test getting errors without specifying a context uses 'default'"""
     error = BaseError("Test default error", "TestErrorType", "LOW")
-    pipeline_context.add_error(error)
+    await pipeline_context.add_error(error)
 
     errors = pipeline_context.get_errors()
     assert len(errors) == 1
     assert errors[0].message == "Test default error"
 
 
-def test_list_all_errors(pipeline_context):
+@pytest.mark.asyncio
+async def test_list_all_errors(pipeline_context):
     """Test listing all errors for all contexts"""
     error1 = BaseError("Test error 1", "TestErrorType", "HIGH")
     error2 = BaseError("Test error 2", "TestErrorType", "LOW")
-
-    pipeline_context.add_error(error1, context="stage_1")
-    pipeline_context.add_error(error2, context="stage_2")
+    await pipeline_context.add_error(error1, context="stage_1")
+    await pipeline_context.add_error(error2, context="stage_2")
 
     all_errors = pipeline_context.list_all_errors()
     assert len(all_errors) == 2
@@ -83,22 +85,24 @@ def test_list_all_errors(pipeline_context):
     assert all_errors[1].message == "Test error 2"
 
 
-def test_clear_errors(pipeline_context):
+@pytest.mark.asyncio
+async def test_clear_errors(pipeline_context):
     """Test clearing errors for a specific context"""
     error = BaseError("Test error", "TestErrorType", "HIGH")
-    pipeline_context.add_error(error, context="stage_1")
+    await pipeline_context.add_error(error, context="stage_1")
 
     pipeline_context.clear_errors("stage_1")
     assert pipeline_context.get_errors("stage_1") == []
 
 
-def test_clear_all_errors(pipeline_context):
+@pytest.mark.asyncio
+async def test_clear_all_errors(pipeline_context):
     """Test clearing all errors for all contexts"""
     error1 = BaseError("Test error 1", "TestErrorType", "HIGH")
     error2 = BaseError("Test error 2", "TestErrorType", "LOW")
 
-    pipeline_context.add_error(error1, context="stage_1")
-    pipeline_context.add_error(error2, context="stage_2")
+    await pipeline_context.add_error(error1, context="stage_1")
+    await pipeline_context.add_error(error2, context="stage_2")
 
     pipeline_context.clear_errors()
 

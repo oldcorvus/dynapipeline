@@ -5,6 +5,8 @@ Defines middleware to log with pythons logging package
 import logging
 from typing import Any, Dict, Optional
 
+from injector import inject
+
 from dynapipeline.core.base_middleware import BaseMiddleware
 from dynapipeline.core.context import BaseContext
 from dynapipeline.utils.types import T
@@ -15,6 +17,7 @@ class LoggerMiddleware(BaseMiddleware[T]):
     Middleware to log any item
     """
 
+    @inject
     def __init__(
         self,
         context: BaseContext,

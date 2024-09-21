@@ -1,10 +1,10 @@
 """
     Defines the base abstract class for middlewares
 """
-
 from abc import ABC, abstractmethod
 from typing import Generic
 
+from dynapipeline.core.context import BaseContext
 from dynapipeline.exceptions.middleware import MiddlewareProcessingError
 from dynapipeline.utils.types import T
 
@@ -14,11 +14,14 @@ class BaseMiddleware(ABC, Generic[T]):
     Abstract base class for processing items
     """
 
-    def __init__(self, enabled: bool = True, description: str = ""):
+    def __init__(
+        self, context: BaseContext, enabled: bool = True, description: str = ""
+    ):
         self.enabled = enabled
         self.description = description
+        self.context = context
 
-    def handle(self, item: T) -> T:
+    async def handle(self, item: T) -> T:
         """
         Handle the given item
         """
@@ -26,12 +29,12 @@ class BaseMiddleware(ABC, Generic[T]):
         if not self.enabled:
             return item
         try:
-            return self._handle(item)
+            return await self._handle(item)
         except Exception as e:
             raise MiddlewareProcessingError(f"{self.__class__.__name__}", str(e)) from e
 
     @abstractmethod
-    def _handle(self, item: T) -> T:
+    async def _handle(self, item: T) -> T:
         """
         Handle the given item
         """
@@ -39,10 +42,7 @@ class BaseMiddleware(ABC, Generic[T]):
 
     def toggle(self, enable: bool) -> None:
         """
-        Enable or disable the middleware.
-
-        Args:
-            enable (bool): Whether to enable or disable the middleware.
+        Enable or disable the middleware
         """
         self.enabled = enable
 

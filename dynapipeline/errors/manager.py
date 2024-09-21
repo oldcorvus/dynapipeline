@@ -21,11 +21,11 @@ class ErrorManager(BaseRegistry[List[BaseError]], MiddlewareMixin[BaseError]):
 
         self._items = defaultdict(list)
 
-    def add(self, error: BaseError, context: str = "default") -> None:
+    async def add(self, error: BaseError, context: str = "default") -> None:
         """
         Adds an error to the registry for optional context
         """
-        error = self.process_with_middleware(error)
+        error = await self.process_with_middleware(error)
         if error is not None:
             self._items[context].append(error)
 

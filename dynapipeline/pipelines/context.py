@@ -24,12 +24,12 @@ class PipelineContext(BaseContext[T]):
         super().__init__(raise_on_missing)
         self._error_registry = error_registry or ErrorManager()
 
-    def add_error(self, error: BaseError, context: str = "default") -> None:
+    async def add_error(self, error: BaseError, context: str = "default") -> None:
         """
         Adds an error to the error registry
 
         """
-        self._error_registry.add(error, context)
+        await self._error_registry.add(error, context)
 
     def get_errors(self, context: str = "default") -> list[BaseError]:
         """

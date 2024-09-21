@@ -4,6 +4,8 @@
 from abc import ABC, abstractmethod
 from typing import Generic
 
+from injector import inject
+
 from dynapipeline.core.context import BaseContext
 from dynapipeline.exceptions.middleware import MiddlewareProcessingError
 from dynapipeline.utils.types import T
@@ -14,6 +16,7 @@ class BaseMiddleware(ABC, Generic[T]):
     Abstract base class for processing items
     """
 
+    @inject
     def __init__(
         self, context: BaseContext, enabled: bool = True, description: str = ""
     ):

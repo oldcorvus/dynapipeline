@@ -3,3 +3,5 @@ PyYAML>=5.3.1
 toml>=0.10.2
 pika>=1.2.0
 asyncio>=3.4.3
+injector==0.22.0
+pytest-asyncio==0.24.0

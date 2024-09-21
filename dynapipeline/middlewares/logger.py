@@ -7,8 +7,8 @@ from typing import Any, Dict, Optional
 
 from injector import inject
 
+from dynapipeline.core.base_context import BaseContext
 from dynapipeline.core.base_middleware import BaseMiddleware
-from dynapipeline.core.context import BaseContext
 from dynapipeline.utils.types import T
 
 

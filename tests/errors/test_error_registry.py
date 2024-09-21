@@ -7,8 +7,8 @@ from typing import Optional
 
 import pytest
 
+from dynapipeline.core.base_context import BaseContext
 from dynapipeline.core.base_middleware import BaseMiddleware
-from dynapipeline.core.context import BaseContext
 from dynapipeline.errors.base import BaseError
 from dynapipeline.errors.manager import ErrorManager
 

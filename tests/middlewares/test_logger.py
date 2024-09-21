@@ -5,7 +5,7 @@ import logging
 
 import pytest
 
-from dynapipeline.core.context import BaseContext
+from dynapipeline.core.base_context import BaseContext
 from dynapipeline.errors.base import BaseError
 from dynapipeline.middlewares.logger import LoggerMiddleware
 from dynapipeline.utils.error_levels import SeverityLevel

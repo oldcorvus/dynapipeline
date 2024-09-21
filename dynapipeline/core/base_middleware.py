@@ -6,7 +6,7 @@ from typing import Generic
 
 from injector import inject
 
-from dynapipeline.core.context import BaseContext
+from dynapipeline.core.base_context import BaseContext
 from dynapipeline.exceptions.middleware import MiddlewareProcessingError
 from dynapipeline.utils.types import T
 

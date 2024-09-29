@@ -1,11 +1,11 @@
 """Contains tests for Base Registry"""
 import pytest
 
-from dynapipeline.core.base_registry import BaseRegistry
 from dynapipeline.exceptions.registry import (
     ItemAlreadyRegisteredError,
     ItemNotFoundError,
 )
+from dynapipeline.utils.base_registry import BaseRegistry
 
 
 def test_register_item():

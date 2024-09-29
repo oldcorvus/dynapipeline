@@ -2,7 +2,7 @@
 from typing import Optional
 
 
-class BaseDynapipelineError(Exception):
+class DynaPipelineException(Exception):
     """Base exception for all custom errors in the Dynapipeline system"""
 
     def __init__(self, message: str, context: Optional[str] = None):

@@ -3,10 +3,10 @@
 """
 from typing import Optional
 
-from dynapipeline.exceptions.base import BaseDynapipelineError
+from dynapipeline.exceptions.base import DynaPipelineException
 
 
-class RegistryError(BaseDynapipelineError):
+class RegistryError(DynaPipelineException):
     """Base exception for registry related errors"""
 
     pass

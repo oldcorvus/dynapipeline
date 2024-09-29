@@ -1,6 +1,4 @@
-"""
- This module provides tests for BaseRegistery class
-"""
+"""Contains tests for Base Registry"""
 import pytest
 
 from dynapipeline.core.base_registry import BaseRegistry
@@ -10,86 +8,93 @@ from dynapipeline.exceptions.registry import (
 )
 
 
-class MockPlugin:
-    """
-    Helper class for testing
-    """
-
-    def __init__(self, name):
-        self.name = name
+def test_register_item():
+    """Test that items can be registered successfully"""
+    registry = BaseRegistry()
+    registry.register("item1", "value1")
+    assert registry["item1"] == "value1"
 
 
-def test_register_and_get():
-    """
-    Test registering an item and retrieving it from the registry.
-    """
-    registry = BaseRegistry[MockPlugin]()
-    plugin = MockPlugin("Plugin1")
-    registry.register("plugin1", plugin)
-
-    retrieved = registry.get("plugin1")
-    assert retrieved == plugin
-    assert retrieved.name == "Plugin1"
+def test_unregister_item():
+    """Test that items can be unregistered successfully"""
+    registry = BaseRegistry()
+    registry.register("item1", "value1")
+    registry.unregister("item1")
+    with pytest.raises(ItemNotFoundError):
+        registry["item1"]
 
 
-def test_register_existing_item_raises_error():
-    """
-    Test that registering an already registered item raises an ItemAlreadyRegisteredError.
-    """
-    registry = BaseRegistry[MockPlugin]()
-    plugin = MockPlugin("Plugin1")
-    registry.register("plugin1", plugin)
-
+def test_register_duplicate_item():
+    """Test that registering an already registered item raises an error"""
+    registry = BaseRegistry()
+    registry.register("item1", "value1")
     with pytest.raises(ItemAlreadyRegisteredError):
-        registry.register("plugin1", plugin)
+        registry.register("item1", "value2")
 
 
-def test_unregister_and_is_registered():
-    """
-    Test unregistering an item and verifying its removal from the registry.
-    """
-    registry = BaseRegistry[MockPlugin]()
-    plugin = MockPlugin("Plugin1")
-    registry.register("plugin1", plugin)
-
-    assert registry.is_registered("plugin1")
-
-    registry.unregister("plugin1")
-
-    assert not registry.is_registered("plugin1")
-
-
-def test_unregister_non_existing_item_raises_error():
-    """
-    Test that trying to unregister a non-existing item raises an ItemNotFoundError.
-    """
-    registry = BaseRegistry[MockPlugin]()
-
+def test_unregister_non_existent_item():
+    """Test that trying to unregister a non-existent item raises an error"""
+    registry = BaseRegistry()
     with pytest.raises(ItemNotFoundError):
-        registry.unregister("non_existing")
+        registry.unregister("non_existent_item")
 
 
-def test_get_non_existing_item_raises_error():
-    """
-    Test that trying to retrieve a non-existing item raises an ItemNotFoundError.
-    """
-    registry = BaseRegistry[MockPlugin]()
-
+def test_get_item_not_found():
+    """Test that retrieving a non-existent item raises an error."""
+    registry = BaseRegistry()
     with pytest.raises(ItemNotFoundError):
-        registry.get("non_existing")
+        registry["item1"]
 
 
-def test_count_and_clear():
-    """
-    Test counting registered items and clearing the registry.
-    """
-    registry = BaseRegistry[MockPlugin]()
-    registry.register("plugin1", MockPlugin("Plugin1"))
-    registry.register("plugin2", MockPlugin("Plugin2"))
-    registry.register("plugin3", MockPlugin("Plugin3"))
+def test_get_item_with_default_factory():
+    """Test that retrieving a non-existent item returns a default value if default_factory is set"""
+    registry = BaseRegistry(default_factory=lambda: "default_value")
+    assert registry["non_existent"] == "default_value"
 
-    assert registry.count() == 3
+
+def test_len_registry():
+    """Test that the length of the registry is correct."""
+    registry = BaseRegistry()
+    assert len(registry) == 0
+    registry.register("item1", "value1")
+    registry.register("item2", "value2")
+    assert len(registry) == 2
+    registry.unregister("item1")
+    assert len(registry) == 1
+
+
+def test_iterate_registry():
+    """Test that the registry can be iterated over"""
+    registry = BaseRegistry()
+    registry.register("item1", "value1")
+    registry.register("item2", "value2")
+
+    items = {key: registry[key] for key in registry}
+
+    assert items == {"item1": "value1", "item2": "value2"}
+
+
+def test_clear_registry():
+    """Test that the clear method removes all items from the registry"""
+    registry = BaseRegistry()
+    registry.register("item1", "value1")
+    registry.register("item2", "value2")
+
+    assert len(registry) == 2
 
     registry.clear()
 
-    assert registry.count() == 0
+    assert len(registry) == 0
+    with pytest.raises(ItemNotFoundError):
+        registry["item1"]
+
+
+def test_items_method():
+    """Test that the items method returns all key-value pairs in the registry"""
+    registry = BaseRegistry()
+    registry.register("item1", "value1")
+    registry.register("item2", "value2")
+
+    expected_items = {"item1": "value1", "item2": "value2"}
+
+    assert dict(registry.items()) == expected_items

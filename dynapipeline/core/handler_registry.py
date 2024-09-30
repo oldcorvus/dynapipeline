@@ -3,7 +3,9 @@
 
 """
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import List
+
+from dynapipeline.core.handler import AbstractHandler
 
 
 class AbstractHandlerRegistry(ABC):
@@ -12,15 +14,15 @@ class AbstractHandlerRegistry(ABC):
     """
 
     @abstractmethod
-    def register(self, handler: Any) -> None:
+    def attach(self, handler: List[AbstractHandler]) -> None:
         """
-        Registers a handler in the registry
+        attaches a handler to the registry
         """
-        raise NotImplementedError("Subclasses must implement this method")
+        raise NotImplementedError("Subclasses must implement 'attach' method")
 
     @abstractmethod
     async def notify(self, method_name: str, *args, **kwargs) -> None:
         """
         Notifies (calls) all handlers registered under a specific method name
         """
-        raise NotImplementedError("Subclasses must implement this method")
+        raise NotImplementedError("Subclasses must implement 'notify' method")

@@ -2,6 +2,7 @@
     Defines HandlerRegistry for managing handlers
 """
 import asyncio
+import inspect
 from typing import Any, Awaitable, Callable, Dict, List
 
 from dynapipeline.core.handler import AbstractHandler
@@ -25,12 +26,15 @@ class HandlerRegistry(
         method_dict: Dict[str, List[Callable[..., Awaitable[Any]]]] = {}
 
         for handler in handlers:
-            for method_name in dir(handler):
-                method = getattr(handler, method_name)
-                if callable(method) and not method_name.startswith("_"):
-                    if method_name not in method_dict:
-                        method_dict[method_name] = []
-                    method_dict[method_name].append(method)
+            for method_name, method in inspect.getmembers(
+                handler, predicate=inspect.isroutine
+            ):
+                # Skip magic methods
+                if method_name.startswith("__") and method_name.endswith("__"):
+                    continue
+                if method_name not in method_dict:
+                    method_dict[method_name] = []
+                method_dict[method_name].append(method)
 
         for name, methods in method_dict.items():
             super().register(name, methods)
@@ -40,8 +44,10 @@ class HandlerRegistry(
         Notifies (calls) all handlers registered under a specific method name
         """
         methods = self.get(method_name)
+        result = None
         if methods:
             for method in methods:
                 result = method(*args, **kwargs)
                 if asyncio.iscoroutine(result):
-                    await result
+                    result = await result
+        return result

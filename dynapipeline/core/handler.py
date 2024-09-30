@@ -1,55 +1,41 @@
 """
-    Contains Handler abstract class 
+        Defines  interface for handlers
+        
 """
-from abc import ABC
-from typing import Any, Awaitable, Callable, Optional
+from abc import ABC, abstractmethod
+from typing import Any, Awaitable, Callable
 
-from pydantic import BaseModel
-
-from dynapipeline.core.component import PipelineComponent
+from dynapipeline.core.component import AbstractComponent
 
 
-class Handler(BaseModel, ABC):
+class AbstractHandler(ABC):
     """
-    Abstract class for all handlers providing default no-op implementations
-    Handlers can override only the methods they need which can be either synchronous or asynchronous
+    Abstract base class for all handlers
     """
 
-    component: PipelineComponent
+    component: AbstractComponent
 
-    class Config:
-        """pydantic config"""
+    @abstractmethod
+    def before(self, *args, **kwargs):
+        """Method is called before the component's execution"""
+        pass
 
-        arbitrary_types_allowed = True
-
-    def before(self, *args, **kwargs) -> Optional[Awaitable[None]]:
-        """
-        Called before the component's execution
-        Can be overridden to provide custom behavior
-
-        """
-        return None
-
+    @abstractmethod
     async def around(
         self, execute: Callable[..., Awaitable[Any]], *args, **kwargs
     ) -> Any:
         """
-        Wraps around the component's execution Must be asynchronous
-        Can be overridden to provide custom behavior
+        Wraps around the component's execution
+        default implementation calls `execute()`
+        """
+        pass
 
-        """
-        return await execute(*args, **kwargs)
+    @abstractmethod
+    async def after(self, result, *args, **kwargs):
+        """Method is called after the component's execution"""
+        pass
 
-    def after(self, result: Any, *args, **kwargs) -> Optional[Awaitable[None]]:
-        """
-        Called after the component's execution
-        Can be overridden to provide custom behavior
-        """
-        return None
-
-    def on_error(self, error: Exception, *args, **kwargs) -> Optional[Awaitable[None]]:
-        """
-        Called when an error occurs during the component's execution
-        Can be overridden to provide custom behavior
-        """
-        return None
+    @abstractmethod
+    def on_error(self, error: Exception, *args, **kwargs):
+        """Method is called when an error occurs"""
+        pass

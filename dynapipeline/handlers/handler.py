@@ -15,7 +15,7 @@ class Handler(BaseModel, AbstractHandler[PipelineComponent]):
     Handlers can override only the methods they need which can be  synchronous or asynchronous
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True)
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="allow")
 
     def before(
         self, component: PipelineComponent, *args, **kwargs

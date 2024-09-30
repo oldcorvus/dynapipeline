@@ -9,6 +9,9 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from dynapipeline.core.component import AbstractComponent
 from dynapipeline.core.context import AbstractContext
+from dynapipeline.core.handler_registry import AbstractHandlerRegistry
+from dynapipeline.handlers.handler_registry import HandlerRegistry
+from dynapipeline.utils.handler_types import HandlerType
 
 
 class PipelineComponent(BaseModel, AbstractComponent):
@@ -19,7 +22,7 @@ class PipelineComponent(BaseModel, AbstractComponent):
     name: str
     id: str = Field(default_factory=lambda: str(uuid.uuid4()), init=False)
     context: Optional[AbstractContext] = None
-
+    handlers: AbstractHandlerRegistry = Field(default_factory=HandlerRegistry)
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     @field_validator("name")
@@ -31,8 +34,19 @@ class PipelineComponent(BaseModel, AbstractComponent):
 
     async def run(self, *args, **kwargs):
         """Run component"""
+        try:
+            await self.handlers.notify(HandlerType.BEFORE, self, *args, **kwargs)
+            if self.handlers.get(HandlerType.AROUND):
+                result = await self.handlers.notify(
+                    HandlerType.AROUND, self, self.execute, *args, **kwargs
+                )
+            else:
+                result = await self.execute(*args, **kwargs)
+            await self.handlers.notify(HandlerType.AFTER, self, result, *args, **kwargs)
+            return result
 
-        return super().run(self, *args, **kwargs)
+        except Exception as e:
+            await self.handlers.notify(HandlerType.ON_ERROR, self, e, *args, **kwargs)
 
     @abstractmethod
     async def execute(self, *args, **kwargs) -> Any:

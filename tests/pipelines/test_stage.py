@@ -13,6 +13,8 @@ class TestStage(Stage):
     A test subclass of Stage for testing purposes
     """
 
+    __test__ = False
+
     async def execute(self, *args, **kwargs):
         """test execute method"""
         await asyncio.sleep(2)

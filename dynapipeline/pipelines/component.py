@@ -12,6 +12,7 @@ from dynapipeline.core.context import AbstractContext
 from dynapipeline.core.handler_registry import AbstractHandlerRegistry
 from dynapipeline.handlers.handler_registry import HandlerRegistry
 from dynapipeline.utils.handler_types import HandlerType
+from dynapipeline.utils.timer import measure_execution_time
 
 
 class PipelineComponent(BaseModel, AbstractComponent):
@@ -23,7 +24,17 @@ class PipelineComponent(BaseModel, AbstractComponent):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()), init=False)
     context: Optional[AbstractContext] = None
     handlers: AbstractHandlerRegistry = Field(default_factory=HandlerRegistry)
-    model_config = ConfigDict(arbitrary_types_allowed=True)
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="ignore")
+    start_time: Optional[float] = None
+    end_time: Optional[float] = None
+    execution_time: Optional[float] = None
+
+    def set_context(self, context: AbstractContext):
+        """
+        Set the context for the component.
+
+        """
+        self.context = context
 
     @field_validator("name")
     def validate_name(cls, value):
@@ -32,6 +43,7 @@ class PipelineComponent(BaseModel, AbstractComponent):
             raise ValueError("The 'name' must be non-empty string")
         return value
 
+    @measure_execution_time
     async def run(self, *args, **kwargs):
         """Run component"""
         try:
@@ -47,6 +59,7 @@ class PipelineComponent(BaseModel, AbstractComponent):
 
         except Exception as e:
             await self.handlers.notify(HandlerType.ON_ERROR, self, e, *args, **kwargs)
+            raise
 
     @abstractmethod
     async def execute(self, *args, **kwargs) -> Any:

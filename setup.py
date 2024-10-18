@@ -17,18 +17,14 @@ setup(
     include_package_data=True,
     install_requires=[
         "pydantic>=1.8.2",
-        "PyYAML>=5.3.1",
-        "toml>=0.10.2",
-        "pika>=1.2.0",
-        "asyncio>=3.4.3",
     ],
     extras_require={
         "dev": ["pytest", "tox", "flake8"],
     },
     classifiers=[
-        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.11",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.9",
+    python_requires=">=3.11",
 )

@@ -7,8 +7,6 @@ from collections.abc import MutableMapping
 from dataclasses import dataclass, field
 from typing import Any, Dict
 
-from dynapipeline.exceptions.context import ContextKeyError
-
 
 @dataclass
 class AbstractContext(ABC, MutableMapping[str, Any]):
@@ -38,8 +36,8 @@ class AbstractContext(ABC, MutableMapping[str, Any]):
         """Retrieve the value associated with the given key"""
         try:
             return self._data[key]
-        except KeyError as e:
-            raise ContextKeyError(key) from e
+        except KeyError:
+            raise
 
     def __setitem__(self, key: str, value: Any):
         """Assign a value to a specific key in the context"""
@@ -49,8 +47,8 @@ class AbstractContext(ABC, MutableMapping[str, Any]):
         """Remove the value associated with the given key"""
         try:
             del self._data[key]
-        except KeyError as e:
-            raise ContextKeyError(key) from e
+        except KeyError:
+            raise
 
     def __iter__(self):
         """Return an iterator over the keys stored in the context"""

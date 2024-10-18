@@ -41,3 +41,23 @@ class InfinitLoopStrategy(CycleStrategy):
         else:
             while not self.event.is_set():
                 await execute_fn(components, *args, **kwargs)
+
+
+class LoopCycleStrategy(CycleStrategy):
+    """Executes the group of components in a specified cycles"""
+
+    def __init__(self, cycles: int) -> None:
+        self.cycles = cycles
+
+    async def run(
+        self,
+        execute_fn: Callable[[List[PipelineComponent], Any], Any],
+        components: List[PipelineComponent],
+        *args: Any,
+        **kwargs: Any
+    ) -> Any:
+        results = []
+        for _ in range(self.cycles):
+            result = await execute_fn(components, *args, **kwargs)
+            results.append(result)
+        return results

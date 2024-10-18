@@ -9,7 +9,12 @@ class AbstractComponent(ABC):
     Abstract class for all pipeline components
     """
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, **kwargs):
+        """
+        Initialize the component with a name.
+        Accepts arbitrary keyword arguments to ensure compatibility with Pydantic.
+        """
+        super().__init__(**kwargs)
         self.name = name
 
     async def run(self, *args, **kwargs):

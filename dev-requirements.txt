@@ -7,3 +7,4 @@ pre-commit==3.3.3
 PyYAML>=5.3.1
 toml>=0.10.2
 pytest==8.3.1
+pytest-asyncio==0.24.0

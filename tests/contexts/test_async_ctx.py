@@ -3,7 +3,6 @@
 import pytest
 
 from dynapipeline.contexts.async_ctx import AsyncLockableContext
-from dynapipeline.exceptions.context import ContextKeyError
 
 
 @pytest.mark.asyncio
@@ -74,7 +73,7 @@ async def test_key_error_on_non_existent_key():
     """Test that accessing a non-existent key raises a ContextKeyError"""
     context = AsyncLockableContext()
 
-    with pytest.raises(ContextKeyError):
+    with pytest.raises(KeyError):
         _ = context["non_existent"]
 
     context["existing_key"] = "value"

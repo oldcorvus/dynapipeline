@@ -2,6 +2,7 @@
     Contains AsyncLockableContext that extends AsyncLockableContext with asyncio.Lock
 """
 import asyncio
+from typing import Any, Dict, Optional
 
 from dynapipeline.core.context import AbstractContext
 
@@ -11,8 +12,10 @@ class AsyncLockableContext(AbstractContext):
     Extends AbstractContext with an asyncio.Lock
     """
 
-    def __init__(self):
+    def __init__(self, initial_data: Optional[Dict[str, Any]] = None):
         super().__init__()
+        if initial_data:
+            self._data.update(initial_data)
         self._async_lock = asyncio.Lock()
 
     async def lock(self):

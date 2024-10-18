@@ -1,14 +1,25 @@
 """Contains ProtectedContext that uses a boolean flag to make context immutable"""
-from typing import Any
+from typing import Any, Dict, Optional
 
 from dynapipeline.core.context import AbstractContext
 from dynapipeline.exceptions.context import ContextKeyError, ContextLockedError
+
+# for now i just lock the context before pipeline execution but it has some limitations
+# and problems like context itself is locked, mutable objects inside
+# can still be modified, leading to potential inconsistencies and
+# simple boolean lock is not suffient so later i may add Versioning with vector clock or Snapshots for context to
+# let users modify context safely
 
 
 class ProtectedContext(AbstractContext):
     """
     A basic lockable context using a simple boolean  to make context immutable when locked
     """
+
+    def __init__(self, initial_data: Optional[Dict[str, Any]] = None):
+        super().__init__()
+        if initial_data:
+            self._data.update(initial_data)
 
     def lock(self):
         """Locks the context to make it immutable"""

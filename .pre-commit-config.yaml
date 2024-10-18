@@ -39,3 +39,4 @@ repos:
     hooks:
       - id: pylint
         args: ["--disable=all", "--enable=missing-docstring"]
+        exclude: ^examples/

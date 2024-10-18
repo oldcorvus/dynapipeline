@@ -57,3 +57,15 @@ class AbstractContext(ABC, MutableMapping[str, Any]):
     def __len__(self) -> int:
         """Return the number of key-value pairs stored in the context"""
         return len(self._data)
+
+    def keys(self):
+        """Return the keys of the internal _data dictionary"""
+        return self._data.keys()
+
+    def items(self):
+        """Return the items of the internal _data dictionary"""
+        return self._data.items()
+
+    def values(self):
+        """Return the values of the internal _data dictionary"""
+        return self._data.values()

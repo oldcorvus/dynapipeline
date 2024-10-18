@@ -1,5 +1,6 @@
 """Contains Strategies for execution of components"""
 import asyncio
+from concurrent.futures import ThreadPoolExecutor
 from typing import List
 
 from dynapipeline.execution.base import ExecutionStrategy
@@ -56,3 +57,28 @@ class SemaphoreExecutionStrategy(ExecutionStrategy):
         """
         async with self.semaphore:
             return await component.run(*args, **kwargs)
+
+
+class MultithreadExecutionStrategy(ExecutionStrategy):
+    """Executes pipeline components concurrently in multiple threads"""
+
+    async def execute(self, components: List[PipelineComponent], *args, **kwargs):
+        """
+        Executes the stages concurrently in multiple threads using ThreadPoolExecutor
+
+        """
+        loop = asyncio.get_event_loop()
+        with ThreadPoolExecutor() as executor:
+            tasks = []
+            for component in components:
+                tasks.append(
+                    loop.run_in_executor(
+                        executor, self._run_component, component, *args, **kwargs
+                    )
+                )
+            await asyncio.gather(*tasks)
+
+    @staticmethod
+    def _run_component(component: PipelineComponent, *args, **kwargs):
+        """Helper function to run stage's execute method in a separate process."""
+        return asyncio.run(component.run(*args, **kwargs))

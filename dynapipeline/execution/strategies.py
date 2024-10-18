@@ -1,4 +1,5 @@
 """Contains Strategies for execution of components"""
+import asyncio
 from typing import List
 
 from dynapipeline.execution.base import ExecutionStrategy
@@ -16,3 +17,13 @@ class SequentialExecutionStrategy(ExecutionStrategy):
             result = await component.run(*args, **kwargs)
             results.append(result)
         return results
+
+
+class ConcurrentExecutionStrategy(ExecutionStrategy):
+    """
+    Executes pipeline components concurrently using asyncio.gather
+    """
+
+    async def execute(self, components: List[PipelineComponent], *args, **kwargs):
+        tasks = [component.run(*args, **kwargs) for component in components]
+        await asyncio.gather(*tasks)

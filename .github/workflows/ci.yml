@@ -40,3 +40,4 @@ jobs:
     - name: Run pylint
       run: |
         pylint $(git ls-files '*.py') --disable=all --enable=missing-docstring
+        exclude: ^examples/

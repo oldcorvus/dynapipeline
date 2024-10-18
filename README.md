@@ -3,7 +3,7 @@
 
 `dynapipeline` is an **async-first** framework designed for building and managing data pipeline workflows. It provides flexible execution strategies and cycle strategies to run stages and stage groups in different environments, supporting a variety of execution styles. With its focus on modularity and extensibility, `dynapipeline` enables users to easily build, organize, and execute pipelines that fit their specific needs.
 
-please check [examples folder](https://github.com/oldcorvus/dynapipeline/examples) 
+please check [examples folder](https://github.com/oldcorvus/dynapipeline/tree/master/examples) 
 
 ## Features
 
@@ -77,7 +77,7 @@ Documentation and tests for `dynapipeline` are **currently incomplete** but will
 
 ## Examples
 
-Please see the [examples folder](https://github.com/oldcorvus/dynapipeline/examples) for detailed usage examples.
+Please see the [examples folder](https://github.com/oldcorvus/dynapipeline/tree/master/examples) for detailed usage examples.
 
 ## Contribution
 

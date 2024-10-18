@@ -1,6 +1,6 @@
 """Contains Strategies for execution of components"""
 import asyncio
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from typing import List
 
 from dynapipeline.execution.base import ExecutionStrategy
@@ -69,6 +69,27 @@ class MultithreadExecutionStrategy(ExecutionStrategy):
         """
         loop = asyncio.get_event_loop()
         with ThreadPoolExecutor() as executor:
+            tasks = []
+            for component in components:
+                tasks.append(
+                    loop.run_in_executor(
+                        executor, self._run_component, component, *args, **kwargs
+                    )
+                )
+            await asyncio.gather(*tasks)
+
+    @staticmethod
+    def _run_component(component: PipelineComponent, *args, **kwargs):
+        """Helper function to run stage's execute method in a separate process."""
+        return asyncio.run(component.run(*args, **kwargs))
+
+
+class MultiprocessExecutionStrategy(ExecutionStrategy):
+    """Executes stages concurrently in multiple processes using ProcessPoolExecutor"""
+
+    async def execute(self, components: List[PipelineComponent], *args, **kwargs):
+        with ProcessPoolExecutor() as executor:
+            loop = asyncio.get_event_loop()
             tasks = []
             for component in components:
                 tasks.append(
